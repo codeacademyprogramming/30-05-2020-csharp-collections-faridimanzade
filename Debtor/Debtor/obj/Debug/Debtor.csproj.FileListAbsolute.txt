@@ -1,0 +1,7 @@
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\bin\Debug\Debtor.exe.config
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\bin\Debug\Debtor.exe
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\bin\Debug\Debtor.pdb
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\obj\Debug\Debtor.csprojAssemblyReference.cache
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\obj\Debug\Debtor.csproj.CoreCompileInputs.cache
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\obj\Debug\Debtor.exe
+C:\Users\Code\Desktop\CODE_ACADEMY\Back-Home\Collections\30-05-2020-csharp-collections-faridimanzade\Debtor\Debtor\obj\Debug\Debtor.pdb
