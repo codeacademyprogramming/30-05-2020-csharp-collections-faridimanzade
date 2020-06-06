@@ -26,7 +26,7 @@ class Program
         public int Debt { get; set; }
         public override string ToString()
         {
-            return $"{this.FullName} || {this.BirthDay.ToShortDateString()} || {this.Phone} || {this.Email} || {this.Address} || {this.Debt}";
+            return $"{this.FullName} --- {this.BirthDay.ToShortDateString()} --- {this.Phone} --- {this.Email} --- {this.Address} --- {this.Debt}";
         }
     }
 
@@ -172,41 +172,173 @@ class Program
 
         //9) Telefon nomresinde 8 olmayan borclularin yalniz familyasin, yashin ve umumi borcun meblegin cixarmaq
         Console.WriteLine("\n\n=========== Debtors whose phone number doesn't contain 8 are: ");
-        List<Debtor> notContainerEight = debtors.FindAll(x=> !x.Phone.Contains("8"));
+        List<Debtor> notContainerEight = debtors.FindAll(x => !x.Phone.Contains("8"));
         Printer(notContainerEight);
 
 
 
         //11)Adinda ve familyasinda hec olmasa 3 eyni herf olan borclularin siyahisin cixarmaq ve onlari elifba sirasina gore sortirovka elemek
+        Console.WriteLine("\n\n=========== Debtors whose name contains the same letter at least 3 times: ");
+        Dictionary<char, int> with3Letter = new Dictionary<char, int>();
+        List<Debtor> with3LetterList = new List<Debtor>();
+        for (int i = 0; i < debtors.Count; i++)
+        {
+            with3Letter.Clear();
+            for (int j = 0; j < debtors[i].FullName.Length; j++)
+            {
+                if (with3Letter.ContainsKey(debtors[i].FullName[j]))
+                {
+                    with3Letter[debtors[i].FullName[j]]++;
+                }
+                else
+                {
+                    with3Letter.Add(debtors[i].FullName[j], 1);
+                }
+            }
+            foreach (var item in with3Letter)
+            {
+                if (item.Value >= 3)
+                {
+                    with3LetterList.Add(debtors[i]);
+                }
+            }
+        }
+        var namesOFwith3Letter = with3LetterList.Select(x => x.FullName).ToList();
+        namesOFwith3Letter.Sort();
+        foreach (var item in namesOFwith3Letter)
+        {
+            Console.WriteLine("Name ---> " + item);
+        }
+
 
 
         //13)borclulardan en coxu hansi ilde dogulubsa hemin ili cixartmaq
+        Console.WriteLine("\n\n=========== The year the most of the debtors are born is: ");
+        Dictionary<int, int> yearDictionary = new Dictionary<int, int>();
+
+        for (int i = 0; i < debtors.Count; i++)
+        {
+            if (yearDictionary.ContainsKey(debtors[i].BirthDay.Year))
+            {
+                yearDictionary[debtors[i].BirthDay.Year]++;
+            }
+            else
+            {
+                yearDictionary.Add(debtors[i].BirthDay.Year, 1);
+            }
+        }
+
+        foreach (var item in yearDictionary)
+        {
+            Console.WriteLine($"Key-{item.Key}  value-{item.Value}");
+        }
+
+        var maxNumber = yearDictionary.Values.Max();
+        var myKey = yearDictionary.FirstOrDefault(x => x.Value == maxNumber).Key;
+        Console.WriteLine($"The Year is -> {myKey}   It was used -> {maxNumber} times");
+
 
 
         //14)Borcu en boyuk olan 5 borclunun siyahisini cixartmaq
+        Console.WriteLine("\n\n=========== Debtors whose debts are top 5 are: ");
+        var allDebts = debtors.Select(x => x.Debt).ToList();
+        allDebts.Sort();
+        allDebts.Reverse();
+
+        foreach (var item in allDebts)
+        {
+            Console.WriteLine("Debt --> " + item);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine($"Top {i}- biggest is: {allDebts.Skip(i).First()}");
+        }
+
 
 
         //15)Butun borcu olanlarin borcunu cemleyib umumi borcu cixartmaq
+        Console.WriteLine("\n\n=========== Sum of the debts of all debtors is: ");
+        int sumOFDebtsAll = 0;
+        var sumafas = debtors.Select(x => x.Debt);
+        sumOFDebtsAll = sumafas.Sum();
+        Console.WriteLine("General Debt is: " + sumOFDebtsAll);
+
 
 
         //16)2ci dunya muharibesin gormush borclularin siyahisi cixartmaq
+        Console.WriteLine("\n\n=========== Debtors who have seen the war are: ");
+        List<Debtor> worldWar = debtors.FindAll(x => x.BirthDay.Year == 1939 || x.BirthDay.Year == 1940 || x.BirthDay.Year == 1941 || x.BirthDay.Year == 1942 || x.BirthDay.Year == 1943 || x.BirthDay.Year == 1944 || x.BirthDay.Year == 1945);
+        Printer(worldWar);
+
 
 
         //18)Nomresinde tekrar reqemler olmayan borclularin ve onlarin borcunun meblegin cixartmaq
+        Console.WriteLine("\n\n=========== Debtors whose phone number contains distinct numbers are: ");
+        List<Debtor> distPhone = new List<Debtor>();
+
+        for (int i = 0; i < debtors.Count; i++)
+        {
+            string[] numbers = debtors[i].Phone.Split('-');
+            string mainWord = "";
+            foreach (var word in numbers)
+            {
+                mainWord += word;
+            }
+
+            bool isUnique = mainWord.Distinct().ToList().Count() == mainWord.Length;
+
+            if (isUnique)
+            {
+                distPhone.Add(debtors[i]);
+            }
+        }
+        Printer(distPhone);
+
 
 
         //19)Tesevvur edek ki,butun borclari olanlar bugunden etibaren her ay 500 azn pul odeyecekler.Oz ad gunune kimi borcun oduyub qurtara bilenlerin siyahisin cixartmaq
+        Console.WriteLine("\n\n=========== Debtors who can pay 500 till birthday are: ");
+        int nowMonth = DateTime.Now.Month;
+        List<Debtor> debtPayers = new List<Debtor>();
+
+        for (int i = 0; i < debtors.Count; i++)
+        {
+            int tillBIrthday = 0;
+            int patternUserMonth = debtors[i].BirthDay.Month;
+            if (nowMonth > patternUserMonth)
+            {
+                tillBIrthday = 12 - nowMonth + patternUserMonth;
+            }
+            else
+            {
+                tillBIrthday = patternUserMonth - nowMonth;
+            }
+            Console.WriteLine(tillBIrthday);
+            if (tillBIrthday * 500 >= debtors[i].Debt)
+            {
+                debtPayers.Add(debtors[i]);
+            }
+        }
+        Printer(debtPayers);
+
 
 
         //20)Adindaki ve familyasindaki herflerden "smile" sozunu yaza bileceyimiz borclularin siyahisini cixartmaq
+        Console.WriteLine("\n\n=========== Debtors whose name can create word 'smile' are: ");
+        var smileList = debtors.FindAll(x => x.FullName.Contains('s') && x.FullName.Contains('m') && x.FullName.Contains('i') && x.FullName.Contains('l') && x.FullName.Contains('e'));
+        Printer(smileList);
 
+
+
+        // METHOD FOR EASY PRINTING
         void Printer(List<Debtor> LastResult)
         {
             foreach (var item in LastResult)
             {
                 Console.WriteLine(item.ToString());
             }
-            Console.WriteLine("\n-------------------------------------------\n-------------------------------------------\n");
+            Console.WriteLine("\n#########################################\n#########################################\n");
         }
     }
 }
